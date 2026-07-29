@@ -413,11 +413,11 @@ body:has(.mobile-nav.open) .site-header {
 /* Cada botão define sua própria cor de "halo" do pulso (--pulse-color),
    e um pequeno atraso (animation-delay) para os pulsos não ficarem
    perfeitamente sincronizados entre si — fica mais natural. */
-.instagram { background: linear-gradient(135deg,#6d39c8,#d32d81 55%,#f0a631); --pulse-color: rgba(42, 46, 248, 0.55); animation-delay: 0s; }
-.whatsapp { background: #25d366; --pulse-color: rgba(255, 39, 226, 0.918); animation-delay: 1s; }
+.instagram { background: linear-gradient(135deg,#6d39c8,#d32d81 55%,#f0a631); --pulse-color: rgba(248, 42, 248, 0.55); animation-delay: 0s; }
+.whatsapp { background: #25d366; --pulse-color: rgba(118, 255, 39, 0.945); animation-delay: 0s; }
 
-.floating-actions svg { width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:iconBreath 2s ease-in-out infinite; }
-.floating-actions a::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:inherit;filter:blur(18px);opacity:.55;z-index:-1;animation:glowButton 2s infinite ease-in-out;}
+.floating-actions svg { width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:iconBreath 4s ease-in-out infinite; }
+.floating-actions a::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:inherit;filter:blur(18px);opacity:.55;z-index:-1;animation:glowButton 4s infinite ease-in-out;}
 .whatsapp svg { fill: currentColor; stroke: none; } /* o ícone do WhatsApp é preenchido (fill), diferente do Instagram (contornado) */
 
 /* ===== 6. ANIMAÇÕES E RESPONSIVIDADE ===== */
@@ -427,18 +427,9 @@ body:has(.mobile-nav.open) .site-header {
    com um leve aumento de tamanho, criando um efeito de pulso bem perceptível.
    Cada elemento define sua própria cor via a variável --pulse-color;
    caso não seja definida, cai no tom dourado padrão da marca. */
-@keyframes glowButton{0%,100%{transform:scale(1);opacity:1;filter:blur(1px)}10%{transform:scale(1);opacity:5;filter:blur(4px)}}
-@keyframes iconBreath{0%,100%{transform:scale(1);filter:drop-shadow(0 0 0 rgba(255,255,255,.4))}25%{transform:scale(0.99);filter:drop-shadow(0 0 10px rgba(255,255,255,.95))}}
-@keyframes pulsar-botao {
-  0%, 15% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 var(--pulse-color, rgba(14, 50, 250, 0.65));
-  }
-  50% {
-    transform: scale(0.75); 
-    box-shadow: 0 0 20px 8px var(--pulse-color, rgba(238, 181, 26, 0.65));
-  }
-}
+@keyframes glowButton{0%,100%{transform:scale(-1);opacity:1;filter:blur(1px)}10%{transform:scale(1);opacity:5;filter:blur(8px)}}
+@keyframes iconBreath{0%,100%{transform:scale(1);filter:drop-shadow(0 0 0 rgba(255,255,255,.4))}1%{transform:scale(0.99);filter:drop-shadow(0 0 10px rgba(255,255,255,.95))}}
+
 
 /* Respeita a preferência do sistema por "reduzir movimento",
    desativando as animações de pulso para quem tem sensibilidade a elas. */
