@@ -1,16 +1,35 @@
+/* ============================================================
+   FOLHA DE ESTILOS — PRIME SERVIÇOS DE PINTURA
+   Organização do arquivo:
+   1. Tema, base e acessibilidade
+   2. Barra de progresso de rolagem (rolinho de tinta)
+   3. Cabeçalho e navegação
+   4. Hero e seções principais
+   5. Rodapé e botões flutuantes
+   6. Animações e responsividade
+   ============================================================ */
+
 /* ===== 1. TEMA, BASE E ACESSIBILIDADE ===== */
+
+/* Variáveis do tema claro (padrão).
+   Centralizar cores em variáveis facilita manutenção e permite
+   trocar o tema inteiro alterando apenas este bloco. */
 :root {
-  --bg: #fcfbf7;
-  --surface: #ffffff;
-  --surface-2: #f3efe6;
-  --text: #1a1c1e;
-  --muted: #55585d;
-  --gold: #b8860b;
-  --gold-hover: #966d08;
-  --line: rgba(0, 0, 0, 0.1);
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --bg: #fcfbf7;            /* cor de fundo geral da página */
+  --surface: #ffffff;         /* fundo de cartões/cabeçalho */
+  --surface-2: #f3efe6;       /* fundo alternativo (seções claras) */
+  --text: #1a1c1e;            /* cor principal do texto */
+  --muted: #55585d;           /* cor de texto secundário/apoio */
+  --gold: #b8860b;            /* cor de destaque da marca */
+  --gold-hover: #966d08;      /* cor de destaque no hover */
+  --gold-rgb: 184, 134, 11;   /* mesma cor --gold em RGB, usada em rgba() para sombras/pulso */
+  --line: rgba(0, 0, 0, 0.1); /* cor de bordas/divisórias sutis */
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* sombra padrão de elementos elevados */
 }
 
+/* Variáveis do tema escuro. São aplicadas quando o atributo
+   data-theme="dark" é definido no <html> pelo script.js
+   (alternador de tema claro/escuro). */
 [data-theme="dark"] {
   --bg: #121416;
   --surface: #1a1d20;
@@ -19,32 +38,41 @@
   --muted: #b6b4ae;
   --gold: #d4a23a;
   --gold-hover: #e5c682;
+  --gold-rgb: 212, 162, 58;
   --line: rgba(255, 255, 255, 0.15);
   --shadow: 0 14px 35px rgba(0, 0, 0, 0.3);
 }
 
+/* Reset básico: garante que padding/border entrem no cálculo
+   de largura/altura de todos os elementos (evita surpresas de layout). */
 * { box-sizing: border-box; }
+
+/* Rolagem suave ao clicar em links internos (âncoras #id)
+   e espaço reservado no topo para o cabeçalho fixo não cobrir o conteúdo. */
 html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+
 body {
   margin: 0;
-  overflow-x: hidden;
+  overflow-x: hidden; /* evita barra de rolagem horizontal indesejada */
   background: var(--bg);
   color: var(--text);
   font-family: Manrope, Arial, sans-serif;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease; /* transição suave ao trocar de tema */
 }
 
-a { color: inherit; }
-img { display: block; max-width: 100%; }
-.section { padding: 100px 8vw; }
+a { color: inherit; } /* links não usam a cor azul padrão do navegador */
+img { display: block; max-width: 100%; } /* remove espaço fantasma abaixo da imagem e evita overflow */
+.section { padding: 100px 8vw; } /* espaçamento padrão usado por várias seções */
 .eyebrow { margin: 0 0 18px; color: var(--gold); font: 12px "DM Mono", monospace; letter-spacing: 0.12em; font-weight: 700; }
 
+/* Tipografia base dos títulos e parágrafos */
 h1, h2, h3, p { margin-top: 0; }
 h1, h2 { letter-spacing: -.04em; line-height: 1.05; }
-h1 { font-size: clamp(3rem, 6vw, 6.5rem); font-weight: 800; }
+h1 { font-size: clamp(3rem, 6vw, 6.5rem); font-weight: 800; } /* tamanho fluido: mín 3rem, ideal 6vw, máx 6.5rem */
 h2 { font-size: clamp(2.2rem, 4vw, 4.5rem); font-weight: 800; }
 h1 em, h2 em, .quote-section em { font-family: "Playfair Display", serif; font-weight: 600; font-style: italic; }
 
+/* ----- Botões de ação (CTA) ----- */
 .button {
   display: inline-flex;
   align-items: center;
@@ -59,10 +87,21 @@ h1 em, h2 em, .quote-section em { font-family: "Playfair Display", serif; font-w
 }
 .button:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 .button span { font-size: 16px; }
-.button-gold { background: var(--gold); color: #fff; }
+
+.button-gold {
+  background: var(--gold);
+  color: #fff;
+  /* Efeito de "piscar"/pulsar: cria um halo que se expande e
+     desaparece continuamente, chamando atenção para o botão.
+     A cor do halo usa --gold-rgb para acompanhar o tema claro/escuro. */
+  --pulse-color: rgba(var(--gold-rgb), 0.55);
+  animation: pulsar-botao 2s infinite ease-in-out;
+}
 .button-gold:hover { background: var(--gold-hover); }
 
-/* ===== 2. BARRA DO TOPO COM ROLINHO DE TINTA ===== */
+/* ===== 2. BARRA DE PROGRESSO DE ROLAGEM (ROLINHO DE TINTA) ===== */
+
+/* Faixa fixa no topo que mostra o quanto o usuário já rolou a página */
 .scroll-progress-container {
   position: fixed;
   z-index: 101;
@@ -71,9 +110,11 @@ h1 em, h2 em, .quote-section em { font-family: "Playfair Display", serif; font-w
   width: 100%;
   height: 4px;
   background: rgba(0, 0, 0, 0.05);
-  pointer-events: none;
+  pointer-events: none; /* não deve capturar cliques do usuário */
 }
 
+/* Preenchimento da barra: a largura é controlada via variável CSS
+   --scroll, atualizada em tempo real pelo script.js (updateProgress). */
 .scroll-progress {
   height: 100%;
   width: var(--scroll, 0%);
@@ -81,11 +122,12 @@ h1 em, h2 em, .quote-section em { font-family: "Playfair Display", serif; font-w
   transition: width 0.05s linear;
 }
 
+/* Ícone do rolo de tinta que "desliza" acompanhando a barra de progresso */
 .pixel-runner {
   position: absolute;
   top: -12px;
   left: var(--scroll, 0%);
-  transform: translateX(-50%);
+  transform: translateX(-50%); /* centraliza o ícone sobre a ponta da barra */
   width: 22px;
   height: 22px;
   color: var(--gold);
@@ -97,12 +139,10 @@ h1 em, h2 em, .quote-section em { font-family: "Playfair Display", serif; font-w
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
-.paint-roller-icon {
-  width: 100%;
-  height: 100%;
-}
+.paint-roller-icon { width: 100%; height: 100%; }
 
 /* ===== 3. CABEÇALHO E NAVEGAÇÃO ===== */
+
 .site-header {
   position: fixed;
   z-index: 100;
@@ -114,13 +154,15 @@ h1 em, h2 em, .quote-section em { font-family: "Playfair Display", serif; font-w
   width: 100%;
   height: 80px;
   padding: 0 6vw;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 88%, transparent); /* fundo semitransparente */
   border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px); /* efeito de vidro fosco atrás do cabeçalho */
   transition: background 0.3s, border-color 0.3s;
 }
 
-/* Deixa o cabeçalho completamente transparente quando o menu estiver aberto */
+/* Quando o menu mobile está aberto (.mobile-nav.open), o cabeçalho
+   fica totalmente transparente para não conflitar visualmente com o menu.
+   :has() permite estilizar um elemento com base em um estado de outro elemento. */
 body:has(.mobile-nav.open) .site-header {
   background: transparent;
   border-bottom-color: transparent;
@@ -136,6 +178,7 @@ body:has(.mobile-nav.open) .site-header {
 
 .header-actions { display: flex; gap: 12px; align-items: center; }
 
+/* Botões circulares do cabeçalho (alternar tema e abrir menu) */
 .theme-toggle, .menu-toggle {
   position: relative;
   display: flex;
@@ -151,38 +194,42 @@ body:has(.mobile-nav.open) .site-header {
   transition: border-color 0.2s, background 0.2s;
 }
 .theme-toggle:hover, .menu-toggle:hover { border-color: var(--gold); }
+
+/* Ícones de sol/lua sobrepostos: alternam opacidade conforme o tema ativo,
+   criando uma transição suave em vez de trocar o emoji abruptamente. */
 .theme-toggle span { position: absolute; font-size: 18px; line-height: 1; }
 .theme-toggle .sun { opacity: 1; }
 .theme-toggle .moon { opacity: 0; }
 [data-theme="dark"] .theme-toggle .sun { opacity: 0; }
 [data-theme="dark"] .theme-toggle .moon { opacity: 1; }
 
-.menu-toggle { display: none; flex-direction: column; gap: 4px; border-radius: 8px; }
+.menu-toggle { display: none; flex-direction: column; gap: 4px; border-radius: 8px; } /* escondido no desktop, exibido no mobile via media query */
 .menu-toggle i { display: block; width: 18px; height: 2px; background: currentColor; transition: transform 0.2s; }
 
-/* ===== MENU MOBILE TRANSPARENTE AO ABRIR ===== */
+/* ===== MENU MOBILE (TELA CHEIA, ESTILO "VIDRO") ===== */
 .mobile-nav {
   position: fixed;
   z-index: 90;
-  inset: 0;
+  inset: 0; /* atalho para top/right/bottom/left: 0 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 30px;
-  
-  /* Transparência alta (15% de opacidade) */
+
+  /* Fundo quase transparente (15% de opacidade) */
   background: color-mix(in srgb, var(--surface) 15%, transparent);
-  
-  /* Efeito de desfoque estilo 'vidro' para manter a leitura fácil */
+
+  /* Desfoque estilo "vidro fosco" para manter a leitura fácil mesmo transparente */
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  
+  -webkit-backdrop-filter: blur(16px); /* prefixo para compatibilidade com Safari */
+
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
+/* Classe adicionada via JavaScript (script.js) ao clicar no botão de menu */
 .mobile-nav.open {
   opacity: 1;
   visibility: visible;
@@ -191,29 +238,41 @@ body:has(.mobile-nav.open) .site-header {
 .mobile-nav a { font-size: 24px; font-weight: 800; text-decoration: none; color: var(--text); }
 .mobile-nav a:hover { color: var(--gold); }
 
-/* ===== 4. HERO & SEÇÕES ===== */
+/* ===== 4. HERO E SEÇÕES PRINCIPAIS ===== */
+
+/* --- Seção Hero (primeira dobra da página) --- */
 .hero { position: relative; display: flex; min-height: 100vh; align-items: center; overflow: hidden; }
 .hero-image, .hero-overlay { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero-image { object-fit: cover; object-position: center; }
-.hero-overlay { background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.1) 100%); }
+.hero-overlay { background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.1) 100%); } /* escurece a imagem para o texto ficar legível */
 .hero-content { position: relative; z-index: 1; width: min(850px, 90vw); padding: 120px 8vw 60px; color: #ffffff; }
 .hero-content .eyebrow { color: #e5c682; }
 .hero-content h1 { margin-bottom: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
 .hero-content h1 em { color: #f3e5c8; }
 .hero-content > p:not(.eyebrow) { max-width: 500px; margin-bottom: 30px; color: #f0f0f0; font-size: 17px; line-height: 1.6; }
+
+/* Indicação de "role para baixo" no canto inferior do hero */
 .scroll-cue { position: absolute; z-index: 1; bottom: 25px; left: 8vw; color: #ffffff; font: 11px "DM Mono", monospace; letter-spacing: 0.1em; text-decoration: none; opacity: 0.8; }
 .scroll-cue span { display: inline-block; margin-left: 6px; animation: bob 1.8s infinite; }
-@keyframes bob { 50% { transform: translateY(5px); } }
+@keyframes bob { 50% { transform: translateY(5px); } } /* pequeno "balanço" vertical da seta */
 
+/* --- Seção "Sobre" --- */
 .intro { background: var(--surface); }
 .intro-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px; align-items: end; }
 .intro h2 em, .services h2 em { color: var(--gold); }
 .intro-grid > p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
 
-.projects { overflow: hidden; }
+/* --- Seção "Projetos" (galeria arrastável) --- */
+.projects { overflow: hidden; } /* evita que o scroll horizontal da galeria "vaze" para o restante da página */
+
+/* Cabeçalho de seção reutilizado (título + descrição alinhados nas pontas).
+   flex-wrap permite que a descrição quebre para a linha de baixo em telas
+   médias, evitando o texto espremido em uma coluna estreita demais. */
 .section-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px 40px; align-items: end; margin-bottom: 40px; }
 .section-heading > p { flex: 0 1 280px; max-width: 280px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
 
+/* Trilho horizontal com scroll-snap: os cartões "encaixam" durante a rolagem.
+   O arraste com o mouse é implementado em script.js (eventos pointerdown/move/up). */
 .project-track {
   display: flex;
   gap: 20px;
@@ -227,21 +286,22 @@ body:has(.mobile-nav.open) .site-header {
 }
 .project-card {
   position: relative;
-  flex: 0 0 min(300px, 80vw);
+  flex: 0 0 min(300px, 80vw); /* não cresce nem encolhe; largura fixa limitada pela viewport */
   height: 420px;
   border-radius: 8px;
   overflow: hidden;
   background: var(--surface-2);
   scroll-snap-align: start;
 }
-.featured-card { flex-basis: min(450px, 85vw); }
+.featured-card { flex-basis: min(450px, 85vw); } /* primeiro card é destacado com mais largura */
 .project-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-.project-card:hover img { transform: scale(1.05); }
-.project-card:after { position: absolute; inset: 30% 0 0; content: ""; background: linear-gradient(transparent, rgba(0,0,0,0.8)); }
+.project-card:hover img { transform: scale(1.05); } /* leve zoom ao passar o mouse */
+.project-card:after { position: absolute; inset: 30% 0 0; content: ""; background: linear-gradient(transparent, rgba(0,0,0,0.8)); } /* gradiente para legibilidade do texto sobre a foto */
 .project-card div { position: absolute; z-index: 1; right: 20px; bottom: 20px; left: 20px; color: #fff; }
 .project-card span { color: #e7cb92; font: 11px "DM Mono", monospace; letter-spacing: 0.1em; }
 .project-card h3 { margin: 6px 0 0; font-size: 20px; }
 
+/* --- Seção "Serviços" --- */
 .services { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 60px; background: var(--surface); }
 .service-list { border-top: 1px solid var(--line); }
 .service-list article { display: grid; grid-template-columns: 40px 1fr 20px; gap: 20px; padding: 25px 0; border-bottom: 1px solid var(--line); }
@@ -249,16 +309,19 @@ body:has(.mobile-nav.open) .site-header {
 .service-list h3 { margin: 0 0 6px; font-size: 20px; }
 .service-list p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
 
+/* --- Seção de citação/destaque com imagem de fundo --- */
 .quote-section { position: relative; display: grid; min-height: 400px; place-items: center; overflow: hidden; background: #121416; color: #fff; }
-.quote-section > img { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
+.quote-section > img { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; } /* imagem de fundo esmaecida */
 .quote-section > div { position: relative; max-width: 850px; padding: 40px 20px; text-align: center; }
 .quote-section p { margin: 0; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; line-height: 1.2; }
 .quote-section em { color: #e6c77f; }
 
+/* --- Seção "Contato" (chamada final para orçamento) --- */
 .contact { background: var(--surface-2); text-align: center; display: flex; flex-direction: column; align-items: center; }
 .contact h2 { margin-bottom: 30px; }
 
-/* ===== 5. RODAPÉ ===== */
+/* ===== 5. RODAPÉ E BOTÕES FLUTUANTES ===== */
+
 .site-footer {
   background: #0f1113;
   color: #e2dfd8;
@@ -326,40 +389,88 @@ body:has(.mobile-nav.open) .site-header {
 }
 .back-to-top:hover { opacity: 0.8; }
 
+/* --- Botões flutuantes fixos (WhatsApp / Instagram) --- */
 .floating-actions { position: fixed; z-index: 80; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
-.floating-actions a { position: relative; display: grid; width: 48px; height: 48px; place-items: center; border-radius: 50%; color: #fff; box-shadow: var(--shadow); transition: transform 0.25s; animation: floating-pulse 2.4s ease-in-out infinite; }
+
+/* position: relative é necessário para o box-shadow do pulso
+   se expandir corretamente a partir das bordas do próprio botão. */
+.floating-actions a {
+  position: relative;
+  display: flex; /* Ajustado de grid para flex para destravar a animação de box-shadow */
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: #fff;
+  box-shadow: var(--shadow);
+  transition: transform 0.25s;
+  /* Efeito de piscar/pulsar contínuo — mesma animação usada nos botões-CTA (.button-gold) */
+  animation: pulsar-botao 2s infinite ease-in-out; /* Ajustado para 2s para pulsar no ritmo correto */
+}
 .floating-actions a:hover { transform: scale(1.1); }
-.instagram { background: linear-gradient(135deg,#6d39c8,#d32d81 55%,#f0a631); --pulse-color: rgba(211, 45, 129, 0.55); animation-delay: 0s; }
-.whatsapp { background: #25d366; --pulse-color: rgba(37, 211, 102, 0.55); animation-delay: 0.4s; }
-.floating-actions svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.whatsapp svg { fill: currentColor; stroke: none; }
 
-@keyframes floating-pulse {
-  0%, 100% { box-shadow: var(--shadow), 0 0 0 0 var(--pulse-color); }
-  50% { box-shadow: var(--shadow), 0 0 0 10px transparent; }
+/* Cada botão define sua própria cor de "halo" do pulso (--pulse-color),
+   e um pequeno atraso (animation-delay) para os pulsos não ficarem
+   perfeitamente sincronizados entre si — fica mais natural. */
+.instagram { background: linear-gradient(135deg,#6d39c8,#d32d81 55%,#f0a631); --pulse-color: rgba(42, 46, 248, 0.55); animation-delay: 0s; }
+.whatsapp { background: #25d366; --pulse-color: rgba(255, 39, 226, 0.918); animation-delay: 1s; }
+
+.floating-actions svg { width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:iconBreath 2s ease-in-out infinite; }
+.floating-actions a::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:inherit;filter:blur(18px);opacity:.55;z-index:-1;animation:glowButton 2s infinite ease-in-out;}
+.whatsapp svg { fill: currentColor; stroke: none; } /* o ícone do WhatsApp é preenchido (fill), diferente do Instagram (contornado) */
+
+/* ===== 6. ANIMAÇÕES E RESPONSIVIDADE ===== */
+
+/* Animação de "piscar"/pulsar reutilizada em todos os botões (.button-gold
+   e .floating-actions a). Combina um brilho (box-shadow) que acende e apaga
+   com um leve aumento de tamanho, criando um efeito de pulso bem perceptível.
+   Cada elemento define sua própria cor via a variável --pulse-color;
+   caso não seja definida, cai no tom dourado padrão da marca. */
+@keyframes glowButton{0%,100%{transform:scale(1);opacity:.5;filter:blur(1px)}50%{transform:scale(1.20);opacity:1;filter:blur(2px)}}
+@keyframes iconBreath{0%,100%{transform:scale(1);filter:drop-shadow(0 0 0 rgba(255,255,255,.4))}50%{transform:scale(0.88);filter:drop-shadow(0 0 10px rgba(255,255,255,.95))}}
+@keyframes pulsar-botao {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--pulse-color, rgba(14, 50, 250, 0.65));
+  }
+  50% {
+    transform: scale(1.05); 
+    box-shadow: 0 0 20px 8px var(--pulse-color, rgba(238, 181, 26, 0.65));
+  }
 }
 
+/* Respeita a preferência do sistema por "reduzir movimento",
+   desativando as animações de pulso para quem tem sensibilidade a elas. */
 @media (prefers-reduced-motion: reduce) {
-  .floating-actions a { animation: none; }
+  .button-gold,
+  .floating-actions a {
+    animation: none;
+  }
 }
 
-/* ===== 6. ANIMAÇÕES & RESPONSIVIDADE ===== */
-.page-loader { position: fixed; z-index: 999; inset: 0; display: grid; gap: 15px; place-content: center; background: var(--bg); transition: opacity 0.4s ease, visibility 0.4s; }
+/* Tela de carregamento inicial (logo + barrinha), escondida após o
+   evento "load" da janela via classe .is-loaded (ver script.js). */
+.page-loader { position: fixed; z-index: 999; inset: 0; display: grid; gap: 15px; place-content: center; background: var(--bg); transition: opacity 0.7s ease, visibility 0.4s; }
 .page-loader img { width: 160px; }
 .page-loader span { width: 100%; height: 3px; background: var(--gold); animation: loading 1s infinite alternate; }
 @keyframes loading { from { opacity: 0.3; } to { opacity: 1; } }
 body.is-loaded .page-loader { visibility: hidden; opacity: 0; }
 
+/* Animação de entrada dos elementos com a classe .reveal: começam
+   invisíveis e deslocados, e "sobem" suavemente para o lugar quando
+   entram na tela (controlado via IntersectionObserver em script.js). */
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
+/* Ajustes para telas menores que 850px (tablets e celulares) */
 @media(max-width: 850px) {
-  .desktop-nav { display: none; }
-  .menu-toggle { display: flex; }
-  .intro-grid, .services { grid-template-columns: 1fr; gap: 40px; }
+  .desktop-nav { display: none; }   /* esconde navegação horizontal */
+  .menu-toggle { display: flex; }   /* mostra botão de menu hambúrguer */
+  .intro-grid, .services { grid-template-columns: 1fr; gap: 40px; } /* empilha colunas */
   .footer-top { grid-template-columns: 1fr; gap: 40px; }
   .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
   .section { padding: 70px 6vw; }
   .section-heading { align-items: start; }
-  .section-heading > p { flex-basis: 100%; max-width: 100%; }
+  .section-heading > p { flex-basis: 100%; max-width: 100%; } /* descrição ocupa a linha toda, evitando texto espremido */
 }

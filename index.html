@@ -1,15 +1,24 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <!-- SEO essencial -->
+  <!-- ============================================================
+       META TAGS ESSENCIAIS PARA SEO
+       Definem codificação, responsividade e como buscadores
+       (Google, Bing) devem indexar e descrever esta página.
+       ============================================================ -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Prime Serviços de Pintura: pintura residencial, comercial, fachadas, texturas e acabamentos premium. Solicite seu orçamento.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="author" content="Prime Serviços de Pintura">
+  <!-- URL canônica: evita conteúdo duplicado aos olhos dos buscadores -->
   <link rel="canonical" href="https://www.primepintura.com.br/">
 
-  <!-- Compartilhamento em redes sociais -->
+  <!-- ============================================================
+       OPEN GRAPH / TWITTER CARDS
+       Controlam como o link aparece ao ser compartilhado em redes
+       sociais (WhatsApp, Facebook, Instagram, Twitter/X etc.).
+       ============================================================ -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
   <meta property="og:title" content="Prime Serviços de Pintura | Acabamento que transforma">
@@ -17,24 +26,46 @@
   <meta property="og:url" content="https://www.primepintura.com.br/">
   <meta property="og:image" content="assets/foto3.jpeg">
   <meta name="twitter:card" content="summary_large_image">
+  <!-- Cor da barra do navegador em dispositivos móveis (Android/Chrome) -->
   <meta name="theme-color" content="#fcfbf7">
 
   <title>Prime Serviços de Pintura | Pintura Residencial e Comercial</title>
+
+  <!-- Pré-conexão com os servidores de fontes do Google para carregar mais rápido -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Dados estruturados para buscadores -->
+  <!-- ============================================================
+       DADOS ESTRUTURADOS (Schema.org / JSON-LD)
+       Ajudam o Google a entender que este site é de uma empresa
+       de pintura, podendo exibir informações extras nos resultados
+       de busca (rich snippets).
+       ============================================================ -->
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"HousePainter","name":"Prime Serviços de Pintura","url":"https://www.primepintura.com.br/","description":"Empresa especializada em pintura residencial, comercial, fachadas e acabamentos especiais.","areaServed":"Brasil","email":"contato@primepintura.com.br","sameAs":["https://www.instagram.com/"]}
   </script>
 </head>
 <body>
-  <!-- Tela de carregamento -->
-  <div class="page-loader" aria-hidden="true"><img src="assets/logo-header.png" alt=""><span></span></div>
-  
-  <!-- Barra de progresso de rolagem com ROLINHO DE TINTA DESLIZANTE -->
+
+  <!-- ============================================================
+       TELA DE CARREGAMENTO INICIAL
+       Fica visível até o evento "load" da janela disparar
+       (ver script.js), escondendo o conteúdo ainda carregando.
+       aria-hidden="true": elemento decorativo, ignorado por leitores de tela.
+       ============================================================ -->
+  <div class="page-loader" aria-hidden="true">
+    <img src="assets/logo-header.png" alt="">
+    <span></span>
+  </div>
+
+  <!-- ============================================================
+       BARRA DE PROGRESSO DE ROLAGEM
+       Mostra visualmente o quanto o usuário já rolou a página,
+       com um ícone de rolo de tinta "deslizando" sobre a barra.
+       A largura/posição são atualizadas via JS (variável CSS --scroll).
+       ============================================================ -->
   <div class="scroll-progress-container" aria-hidden="true">
     <div class="scroll-progress"></div>
     <div class="pixel-runner">
@@ -46,24 +77,42 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       CABEÇALHO FIXO
+       Contém a marca, a navegação principal (desktop), o botão de
+       alternar tema claro/escuro e o botão de menu (mobile).
+       ============================================================ -->
   <header class="site-header">
-    <a class="brand" href="#inicio" aria-label="Prime Serviços de Pintura, página inicial"><img src="assets/logo-header.png" alt="Logo da Prime Serviços de Pintura"></a>
+    <a class="brand" href="#inicio" aria-label="Prime Serviços de Pintura, página inicial">
+      <img src="assets/logo-header.png" alt="Logo da Prime Serviços de Pintura">
+    </a>
+
+    <!-- Navegação visível apenas em telas largas (ver media query em style.css) -->
     <nav class="desktop-nav" aria-label="Navegação principal">
       <a href="#projetos">Projetos</a>
       <a href="#servicos">Serviços</a>
       <a href="#sobre">A Prime</a>
       <a href="#contato">Orçamento</a>
     </nav>
+
     <div class="header-actions">
-      <!-- Botão de Alternar Tema (Modo Claro / Escuro) -->
+      <!-- Botão de Alternar Tema (Modo Claro / Escuro).
+           Os dois emojis (sol/lua) ficam sobrepostos via CSS e
+           alternam opacidade conforme o tema ativo. -->
       <button class="theme-toggle" type="button" aria-label="Alternar tema de cores">
         <span class="sun">☀️</span>
         <span class="moon">🌙</span>
       </button>
-      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false"><i></i><i></i><i></i></button>
+
+      <!-- Botão hambúrguer, visível apenas no mobile.
+           aria-expanded é atualizado via JS ao abrir/fechar o menu. -->
+      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <i></i><i></i><i></i>
+      </button>
     </div>
   </header>
 
+  <!-- Menu mobile em tela cheia, aberto/fechado via classe "open" (script.js) -->
   <nav class="mobile-nav" aria-label="Menu para celular">
     <a href="#projetos">Projetos</a>
     <a href="#servicos">Serviços</a>
@@ -72,6 +121,12 @@
   </nav>
 
   <main>
+
+    <!-- ============================================================
+         SEÇÃO HERO (primeira dobra)
+         fetchpriority="high": pede ao navegador para carregar esta
+         imagem com prioridade máxima, já que é o primeiro conteúdo visível.
+         ============================================================ -->
     <section class="hero" id="inicio" aria-labelledby="titulo-principal">
       <img class="hero-image" src="assets/foto3.jpeg" alt="Ambiente moderno com acabamento marmorizado e iluminação sofisticada" fetchpriority="high">
       <div class="hero-overlay"></div>
@@ -84,6 +139,9 @@
       <a class="scroll-cue" href="#sobre">role para descobrir <span>↓</span></a>
     </section>
 
+    <!-- ============================================================
+         SEÇÃO "SOBRE" (01)
+         ============================================================ -->
     <section class="intro section" id="sobre" aria-labelledby="sobre-titulo">
       <p class="eyebrow reveal">01 — SOBRE A PRIME</p>
       <div class="intro-grid">
@@ -92,6 +150,10 @@
       </div>
     </section>
 
+    <!-- ============================================================
+         SEÇÃO "PROJETOS" (02) — galeria arrastável
+         O comportamento de arrastar com o mouse/touch está em script.js.
+         ============================================================ -->
     <section class="projects section" id="projetos" aria-labelledby="projetos-titulo">
       <div class="section-heading reveal">
         <div>
@@ -100,16 +162,37 @@
         </div>
         <p>Arraste a galeria para explorar trabalhos selecionados.</p>
       </div>
+
+      <!-- loading="lazy": adia o carregamento das imagens fora da tela,
+           melhorando a performance inicial da página. -->
       <div class="project-track" aria-label="Galeria de trabalhos da Prime Serviços de Pintura">
-        <article class="project-card featured-card"><img src="assets/foto2.jpeg" alt="Sala elegante com painel marmorizado" loading="lazy"><div><span>INTERIORES</span><h3>Elegância em cada detalhe</h3></div></article>
-        <article class="project-card"><img src="assets/foto1.jpeg" alt="Quarto com pintura em tom cinza" loading="lazy"><div><span>RESIDENCIAL</span><h3>Leveza e precisão</h3></div></article>
-        <article class="project-card"><img src="assets/foto5.jpeg" alt="Cozinha com gesso iluminado" loading="lazy"><div><span>ACABAMENTOS</span><h3>Luz, textura e harmonia</h3></div></article>
-        <article class="project-card"><img src="assets/foto4.jpeg" alt="Fachada residencial moderna" loading="lazy"><div><span>FACHADAS</span><h3>Impacto desde a chegada</h3></div></article>
+        <article class="project-card featured-card">
+          <img src="assets/foto2.jpeg" alt="Sala elegante com painel marmorizado" loading="lazy">
+          <div><span>INTERIORES</span><h3>Elegância em cada detalhe</h3></div>
+        </article>
+        <article class="project-card">
+          <img src="assets/foto1.jpeg" alt="Quarto com pintura em tom cinza" loading="lazy">
+          <div><span>RESIDENCIAL</span><h3>Leveza e precisão</h3></div>
+        </article>
+        <article class="project-card">
+          <img src="assets/foto5.jpeg" alt="Cozinha com gesso iluminado" loading="lazy">
+          <div><span>ACABAMENTOS</span><h3>Luz, textura e harmonia</h3></div>
+        </article>
+        <article class="project-card">
+          <img src="assets/foto4.jpeg" alt="Fachada residencial moderna" loading="lazy">
+          <div><span>FACHADAS</span><h3>Impacto desde a chegada</h3></div>
+        </article>
       </div>
     </section>
 
+    <!-- ============================================================
+         SEÇÃO "SERVIÇOS" (03)
+         ============================================================ -->
     <section class="services section" id="servicos" aria-labelledby="servicos-titulo">
-      <div class="services-heading reveal"><p class="eyebrow">03 — SERVIÇOS</p><h2 id="servicos-titulo">O cuidado certo<br>para cada <em>projeto.</em></h2></div>
+      <div class="services-heading reveal">
+        <p class="eyebrow">03 — SERVIÇOS</p>
+        <h2 id="servicos-titulo">O cuidado certo<br>para cada <em>projeto.</em></h2>
+      </div>
       <div class="service-list">
         <article class="reveal"><span>01</span><div><h3>Pintura residencial</h3><p>Renovação completa para casas, apartamentos e ambientes internos.</p></div><b>↗</b></article>
         <article class="reveal"><span>02</span><div><h3>Pintura comercial</h3><p>Soluções bem planejadas para lojas, empresas e condomínios.</p></div><b>↗</b></article>
@@ -118,11 +201,17 @@
       </div>
     </section>
 
+    <!-- ============================================================
+         SEÇÃO DE CITAÇÃO / DESTAQUE
+         ============================================================ -->
     <section class="quote-section">
       <img src="assets/foto1.jpeg" alt="Ambiente em processo de pintura" loading="lazy">
       <div class="reveal"><p>Mais do que uma nova pintura, entregamos a sensação de <em>estar em casa.</em></p></div>
     </section>
 
+    <!-- ============================================================
+         SEÇÃO "CONTATO" (04) — chamada final para orçamento via WhatsApp
+         ============================================================ -->
     <section class="contact section" id="contato" aria-labelledby="contato-titulo">
       <p class="eyebrow reveal">04 — VAMOS CONVERSAR?</p>
       <h2 class="reveal" id="contato-titulo">Seu próximo<br>projeto começa<br><em>aqui.</em></h2>
@@ -130,6 +219,11 @@
     </section>
   </main>
 
+  <!-- ============================================================
+       RODAPÉ
+       rel="noopener" nos links target="_blank": impede que a página
+       aberta tenha acesso à janela original (boa prática de segurança).
+       ============================================================ -->
   <footer class="site-footer">
     <div class="footer-top">
       <div class="footer-brand">
@@ -170,10 +264,29 @@
     </div>
   </footer>
 
+  <!-- ============================================================
+       BOTÕES FLUTUANTES (WhatsApp / Instagram)
+       Ficam fixos no canto inferior direito durante toda a navegação.
+       Ambos possuem a animação de pulso definida em style.css
+       (@keyframes pulsar-botao).
+       ============================================================ -->
   <aside class="floating-actions" aria-label="Canais de atendimento">
-    <a class="instagram" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.4" cy="6.8" r=".8" class="fill"></circle></svg></a>
-    <a class="whatsapp" href="https://wa.me/5511999999999" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.096 3 3.5 8.596 3.5 15.5c0 2.42.687 4.68 1.878 6.598L3 29l7.09-2.34a12.44 12.44 0 0 0 5.911 1.507h.005c6.905 0 12.5-5.596 12.5-12.5S22.906 3 16.001 3Zm0 22.667a10.12 10.12 0 0 1-5.156-1.412l-.37-.22-3.844 1.269 1.286-3.75-.242-.386a10.11 10.11 0 0 1-1.542-5.368c0-5.596 4.554-10.15 10.153-10.15 2.71 0 5.256 1.057 7.174 2.976a10.08 10.08 0 0 1 2.973 7.177c0 5.596-4.554 10.15-10.156 10.15Zm5.567-7.6c-.305-.153-1.802-.889-2.081-.99-.279-.102-.482-.153-.686.153-.203.305-.787.99-.965 1.193-.178.204-.356.229-.66.076-.305-.153-1.288-.475-2.454-1.516-.907-.809-1.52-1.809-1.698-2.114-.178-.305-.019-.47.134-.622.137-.137.305-.356.457-.534.153-.178.203-.305.305-.508.102-.204.05-.382-.025-.534-.076-.153-.686-1.654-.94-2.266-.247-.596-.499-.516-.686-.525-.178-.009-.381-.011-.585-.011-.203 0-.534.076-.813.382-.279.305-1.066 1.042-1.066 2.542s1.091 2.949 1.243 3.153c.153.203 2.148 3.28 5.203 4.599.727.314 1.294.501 1.737.641.73.232 1.394.199 1.919.121.585-.087 1.802-.737 2.056-1.449.254-.712.254-1.322.178-1.449-.076-.127-.279-.203-.585-.356Z"/></svg></a>
+    <a class="instagram" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+        <circle cx="12" cy="12" r="4"></circle>
+        <circle cx="17.4" cy="6.8" r=".8" class="fill"></circle>
+      </svg>
+    </a>
+    <a class="whatsapp" href="https://wa.me/5511999999999" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 32 32" fill="currentColor">
+        <path d="M16.001 3C9.096 3 3.5 8.596 3.5 15.5c0 2.42.687 4.68 1.878 6.598L3 29l7.09-2.34a12.44 12.44 0 0 0 5.911 1.507h.005c6.905 0 12.5-5.596 12.5-12.5S22.906 3 16.001 3Zm0 22.667a10.12 10.12 0 0 1-5.156-1.412l-.37-.22-3.844 1.269 1.286-3.75-.242-.386a10.11 10.11 0 0 1-1.542-5.368c0-5.596 4.554-10.15 10.153-10.15 2.71 0 5.256 1.057 7.174 2.976a10.08 10.08 0 0 1 2.973 7.177c0 5.596-4.554 10.15-10.156 10.15Zm5.567-7.6c-.305-.153-1.802-.889-2.081-.99-.279-.102-.482-.153-.686.153-.203.305-.787.99-.965 1.193-.178.204-.356.229-.66.076-.305-.153-1.288-.475-2.454-1.516-.907-.809-1.52-1.809-1.698-2.114-.178-.305-.019-.47.134-.622.137-.137.305-.356.457-.534.153-.178.203-.305.305-.508.102-.204.05-.382-.025-.534-.076-.153-.686-1.654-.94-2.266-.247-.596-.499-.516-.686-.525-.178-.009-.381-.011-.585-.011-.203 0-.534.076-.813.382-.279.305-1.066 1.042-1.066 2.542s1.091 2.949 1.243 3.153c.153.203 2.148 3.28 5.203 4.599.727.314 1.294.501 1.737.641.73.232 1.394.199 1.919.121.585-.087 1.802-.737 2.056-1.449.254-.712.254-1.322.178-1.449-.076-.127-.279-.203-.585-.356Z"/>
+      </svg>
+    </a>
   </aside>
+
+  <!-- defer: o navegador baixa o script em paralelo mas só executa
+       depois que o HTML terminou de ser interpretado (evita bloqueios). -->
   <script src="script.js" defer></script>
 </body>
 </html>
