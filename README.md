@@ -2,7 +2,7 @@
 
 Site institucional da **Prime Serviços de Pintura**, empresa de pintura residencial e comercial em São Paulo - SP. Site estático, responsivo e otimizado para SEO, construído sem frameworks — apenas HTML, CSS e JavaScript puros.
 
-🔗 **Domínio:** [pinturasprime.com.br](https://www.pinturasprime.com.br)
+🔗 **Domínio:** [pinturasprime.com.br](https://www.primepintura.com.br)
 
 ---
 
@@ -78,7 +78,7 @@ Depois é só acessar `http://localhost:8000`.
 
 ## 👤 Autor
 
-Desenvolvido por **[Bruno Carvalho](https://www.linkedin.com/in/bruno-carvalho)**.
+Desenvolvido por **[Bruno Carvalho](https://www.linkedin.com/in/bruno-carvalho-silvaa)**.
 
 ## 📄 Licença
 
