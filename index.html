@@ -8,28 +8,33 @@
        ============================================================ -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Prime Serviços de Pintura: pintura residencial, comercial, fachadas, texturas e acabamentos premium. Solicite seu orçamento.">
+  <meta name="description" content="Pintura residencial e comercial em São Paulo - SP. Atendimento na Vila Esperança e região, fachadas, texturas e acabamentos premium. Solicite seu orçamento pelo WhatsApp.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="author" content="Prime Serviços de Pintura">
-  <!-- URL canônica: evita conteúdo duplicado aos olhos dos buscadores -->
-  <link rel="canonical" href="https://www.primepintura.com.br/">
+  <!-- URL canônica: evita conteúdo duplicado aos olhos dos buscadores.
+       Domínio oficial: pinturasprime.com.br -->
+  <link rel="canonical" href="https://www.pinturasprime.com.br/">
+  <!-- Aponta os buscadores para o sitemap, facilitando a indexação de todas as páginas -->
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 
   <!-- ============================================================
        OPEN GRAPH / TWITTER CARDS
        Controlam como o link aparece ao ser compartilhado em redes
        sociais (WhatsApp, Facebook, Instagram, Twitter/X etc.).
+       Usamos URLs absolutas nas imagens: alguns leitores de OG
+       (WhatsApp, Facebook) não resolvem corretamente caminhos relativos.
        ============================================================ -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
   <meta property="og:title" content="Prime Serviços de Pintura | Acabamento que transforma">
-  <meta property="og:description" content="Pintura profissional com técnica, cuidado e acabamento premium.">
-  <meta property="og:url" content="https://www.primepintura.com.br/">
-  <meta property="og:image" content="assets/foto3.jpeg">
+  <meta property="og:description" content="Pintura residencial e comercial em São Paulo com técnica, cuidado e acabamento premium.">
+  <meta property="og:url" content="https://www.pinturasprime.com.br/">
+  <meta property="og:image" content="https://www.pinturasprime.com.br/assets/foto3.jpeg">
   <meta name="twitter:card" content="summary_large_image">
   <!-- Cor da barra do navegador em dispositivos móveis (Android/Chrome) -->
   <meta name="theme-color" content="#fcfbf7">
 
-  <title>Prime Pintura | Pintura Residencial e Comercial</title>
+  <title>Prime Pintura | Pintura Residencial e Comercial em São Paulo</title>
 
   <!-- Favicon (ícone da aba do navegador) -->
   <link rel="icon" type="image/png" href="assets/logo.jpeg">
@@ -44,12 +49,45 @@
 
   <!-- ============================================================
        DADOS ESTRUTURADOS (Schema.org / JSON-LD)
-       Ajudam o Google a entender que este site é de uma empresa
-       de pintura, podendo exibir informações extras nos resultados
-       de busca (rich snippets).
+       "HousePainter" é um subtipo de "LocalBusiness": além de indicar
+       o ramo de atuação, preenchemos endereço, telefone e horário
+       para o Google poder exibir a empresa em buscas locais
+       ("pintor perto de mim") e no painel lateral do Maps.
+       IMPORTANTE: não incluímos aqui marcação de "Review"/"aggregateRating"
+       com os depoimentos da seção de Avaliações — o Google só permite
+       rich snippets de nota/estrelas quando vêm de um agregador
+       independente (ex: o próprio Google, Reclame Aqui), nunca de
+       avaliações que a própria empresa publica sobre si no seu site.
        ============================================================ -->
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"HousePainter","name":"Prime Serviços de Pintura","url":"https://www.pinturaprime.com.br/","description":"Empresa especializada em pintura residencial, comercial, fachadas e acabamentos especiais.","areaServed":"Brasil","email":"contato@primepintura.com.br","sameAs":["https://www.instagram.com/"]}
+  {
+    "@context": "https://schema.org",
+    "@type": "HousePainter",
+    "name": "Prime Serviços de Pintura",
+    "image": "https://www.pinturaprime.com.br/assets/foto3.jpeg",
+    "url": "https://www.pinturaprime.com.br/",
+    "description": "Empresa especializada em pintura residencial, comercial, fachadas e acabamentos especiais em São Paulo - SP.",
+    "telephone": "+5511989921613",
+    "email": "primepintura12@gmail.com",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rua Evans",
+      "addressLocality": "São Paulo",
+      "addressRegion": "SP",
+      "postalCode": "03648-020",
+      "addressCountry": "BR"
+    },
+    "hasMap": "https://maps.app.goo.gl/o38DEfPgiVSzmPi47",
+    "areaServed": "São Paulo e região",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "08:00",
+      "closes": "23:00"
+    },
+    "sameAs": ["https://www.instagram.com/primepintura12/"]
+  }
   </script>
 </head>
 <body>
@@ -96,6 +134,7 @@
     <nav class="desktop-nav" aria-label="Navegação principal">
       <a href="#projetos">Projetos</a>
       <a href="#servicos">Serviços</a>
+      <a href="#avaliacoes">Avaliações</a>
       <a href="#sobre">A Prime</a>
       <a href="#contato">Orçamento</a>
     </nav>
@@ -121,6 +160,7 @@
   <nav class="mobile-nav" aria-label="Menu para celular">
     <a href="#projetos">Projetos</a>
     <a href="#servicos">Serviços</a>
+    <a href="#avaliacoes">Avaliações</a>
     <a href="#sobre">A Prime</a>
     <a href="#contato">Solicitar orçamento</a>
   </nav>
@@ -170,20 +210,20 @@
 
       <!-- loading="lazy": adia o carregamento das imagens fora da tela,
            melhorando a performance inicial da página. -->
-      <div class="project-track" aria-label="Galeria de trabalhos da Prime Serviços de Pintura">
-        <article class="project-card featured-card">
+      <div class="project-track drag-scroll" aria-label="Galeria de trabalhos da Prime Serviços de Pintura">
+        <article class="project-card featured-card card-reveal">
           <img src="assets/foto2.jpeg" alt="Sala elegante com painel marmorizado" loading="lazy">
           <div><span>INTERIORES</span><h3>Elegância em cada detalhe</h3></div>
         </article>
-        <article class="project-card">
+        <article class="project-card card-reveal">
           <img src="assets/foto1.jpeg" alt="Quarto com pintura em tom cinza" loading="lazy">
           <div><span>RESIDENCIAL</span><h3>Leveza e precisão</h3></div>
         </article>
-        <article class="project-card">
+        <article class="project-card card-reveal">
           <img src="assets/foto5.jpeg" alt="Cozinha com gesso iluminado" loading="lazy">
           <div><span>ACABAMENTOS</span><h3>Luz, textura e harmonia</h3></div>
         </article>
-        <article class="project-card">
+        <article class="project-card card-reveal">
           <img src="assets/foto4.jpeg" alt="Fachada residencial moderna" loading="lazy">
           <div><span>FACHADAS</span><h3>Impacto desde a chegada</h3></div>
         </article>
@@ -207,6 +247,106 @@
     </section>
 
     <!-- ============================================================
+         SEÇÃO "AVALIAÇÕES DO GOOGLE" (04) — carrossel arrastável
+         Reaproveita o mesmo comportamento de arraste da galeria de
+         projetos: basta ter a classe "drag-scroll" (ver script.js).
+
+         ⚠️ ATENÇÃO: os depoimentos abaixo são EXEMPLOS de preenchimento
+         (mesmo espírito das fotos do Unsplash usadas como placeholder).
+         Antes de publicar o site, troque nome, texto e data de cada
+         card pelas avaliações reais copiadas do perfil da empresa no
+         Google. Publicar depoimento fictício como se fosse real é
+         prática enganosa e pode gerar problema com o Google/CDC.
+         ============================================================ -->
+    <section class="reviews section" id="avaliacoes" aria-labelledby="avaliacoes-titulo">
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow">04 — AVALIAÇÕES DO GOOGLE</p>
+          <h2 id="avaliacoes-titulo">O que dizem<br>nossos <em>clientes.</em></h2>
+        </div>
+        <p>Arraste o carrossel para o lado e confira depoimentos de quem já contratou a Prime.</p>
+      </div>
+
+      <div class="reviews-track drag-scroll" aria-label="Avaliações de clientes no Google">
+        <article class="review-card card-reveal">
+          <div class="review-head">
+            <span class="review-avatar" aria-hidden="true">M</span>
+            <div>
+              <strong>Mariana Souza</strong>
+              <span class="review-date">há 2 semanas</span>
+            </div>
+            <svg class="google-icon" viewBox="0 0 24 24" aria-label="Avaliação do Google">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.19 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.85z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.85C6.71 7.3 9.14 5.38 12 5.38z" fill="#EA4335"/>
+            </svg>
+          </div>
+          <div class="review-stars" aria-label="Nota 5 de 5 estrelas">★★★★★</div>
+          <p>Serviço impecável, pontualidade e muito cuidado com os móveis durante a pintura. Recomendo demais a equipe da Prime!</p>
+        </article>
+
+        <article class="review-card card-reveal">
+          <div class="review-head">
+            <span class="review-avatar" aria-hidden="true">R</span>
+            <div>
+              <strong>Rafael Costa</strong>
+              <span class="review-date">há 1 mês</span>
+            </div>
+            <svg class="google-icon" viewBox="0 0 24 24" aria-label="Avaliação do Google">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.19 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.85z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.85C6.71 7.3 9.14 5.38 12 5.38z" fill="#EA4335"/>
+            </svg>
+          </div>
+          <div class="review-stars" aria-label="Nota 5 de 5 estrelas">★★★★★</div>
+          <p>Fizeram a pintura da fachada do prédio inteiro. Organização exemplar e o resultado ficou muito acima do esperado.</p>
+        </article>
+
+        <article class="review-card card-reveal">
+          <div class="review-head">
+            <span class="review-avatar" aria-hidden="true">C</span>
+            <div>
+              <strong>Camila Ferreira</strong>
+              <span class="review-date">há 2 meses</span>
+            </div>
+            <svg class="google-icon" viewBox="0 0 24 24" aria-label="Avaliação do Google">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.19 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.85z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.85C6.71 7.3 9.14 5.38 12 5.38z" fill="#EA4335"/>
+            </svg>
+          </div>
+          <div class="review-stars" aria-label="Nota 5 de 5 estrelas">★★★★★</div>
+          <p>Atendimento rápido pelo WhatsApp, orçamento justo e a equipe deixou tudo limpo ao final do serviço. Super indico.</p>
+        </article>
+
+        <article class="review-card card-reveal">
+          <div class="review-head">
+            <span class="review-avatar" aria-hidden="true">L</span>
+            <div>
+              <strong>Lucas Almeida</strong>
+              <span class="review-date">há 3 meses</span>
+            </div>
+            <svg class="google-icon" viewBox="0 0 24 24" aria-label="Avaliação do Google">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.19 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.85z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.85C6.71 7.3 9.14 5.38 12 5.38z" fill="#EA4335"/>
+            </svg>
+          </div>
+          <div class="review-stars" aria-label="Nota 5 de 5 estrelas">★★★★★</div>
+          <p>Já é a segunda vez que contrato a Prime. Pontuais, capricho no acabamento e preço honesto. Voltarei a chamar com certeza.</p>
+        </article>
+      </div>
+
+      <a class="reviews-cta" href="https://maps.app.goo.gl/o38DEfPgiVSzmPi47" target="_blank" rel="noopener">
+        Ver todas as avaliações no Google <span>↗</span>
+      </a>
+    </section>
+
+    <!-- ============================================================
          SEÇÃO DE CITAÇÃO / DESTAQUE
          ============================================================ -->
     <section class="quote-section">
@@ -218,7 +358,7 @@
          SEÇÃO "CONTATO" (04) — chamada final para orçamento via WhatsApp
          ============================================================ -->
     <section class="contact section" id="contato" aria-labelledby="contato-titulo">
-      <p class="eyebrow reveal">04 — VAMOS CONVERSAR?</p>
+      <p class="eyebrow reveal">05 — VAMOS CONVERSAR?</p>
       <h2 class="reveal" id="contato-titulo">Seu próximo<br>projeto começa<br><em>aqui.</em></h2>
       <a class="button button-gold reveal" href="https://wa.me/5511989921613?text=Olá!%20Gostaria%20de%20solicitar%20um%20orçamento." target="_blank" rel="noopener">Solicitar orçamento <span>↗</span></a>
     </section>
@@ -257,7 +397,7 @@
         <ul>
           <li><a href="https://wa.me/5511989921613" target="_blank" rel="noopener">📱 (11) 98992-1613</a></li>
           <li><a href="mailto:Primepintura12@gmail.com">✉️ Primepintura12@gmail.com </a></li>
-          <li><span>📍 Atendimento em Toda Região</span></li>
+          <li><a href="https://maps.app.goo.gl/o38DEfPgiVSzmPi47" target="_blank" rel="noopener">📍 Rua Evans, Vila Esperança – São Paulo/SP</a></li>
           <li><span>🕒 Seg a Sáb: 08h às 23h</span></li>
         </ul>
       </div>
@@ -265,6 +405,8 @@
 
     <div class="footer-bottom">
       <p>© 2026 PRIME SERVIÇOS DE PINTURA • TODOS OS DIREITOS RESERVADOS</p>
+      <!-- TODO: troque o href abaixo pelo link real do seu perfil do LinkedIn -->
+      <p class="site-credit">Desenvolvido por <a href="https://www.linkedin.com/in/bruno-carvalho" target="_blank" rel="noopener">Bruno Carvalho</a></p>
       <a href="#inicio" class="back-to-top">Voltar ao topo ↑</a>
     </div>
   </footer>

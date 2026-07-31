@@ -5,7 +5,7 @@
    2. Tema claro / escuro
    3. Menu mobile
    4. Rolagem suave para links internos
-   5. Galeria arrastável (drag)
+   5. Carrosséis arrastáveis (drag)
    6. Animações de entrada (scroll reveal)
    7. Barra de progresso de rolagem (rolo de tinta)
    ============================================================ */
@@ -89,42 +89,45 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
   });
 });
 
-/* ===== 5. GALERIA ARRASTÁVEL (DRAG) ===== */
+/* ===== 5. CARROSSÉIS ARRASTÁVEIS (DRAG) ===== */
 
-const gallery = document.querySelector('.project-track');
-
-if (gallery) {
-  let dragActive = false;   // indica se o usuário está arrastando no momento
+// Qualquer trilho horizontal que precise ser arrastável (galeria de
+// projetos, carrossel de avaliações do Google, ou outro que venha a
+// ser adicionado) recebe a classe ".drag-scroll" no HTML e ganha o
+// comportamento de arraste automaticamente — sem repetir este bloco
+// de código para cada novo carrossel.
+document.querySelectorAll('.drag-scroll').forEach((track) => {
+  let dragActive = false;   // indica se o usuário está arrastando este trilho no momento
   let dragStart = 0;        // posição X do ponteiro no início do arraste
-  let initialScroll = 0;    // scrollLeft da galeria no início do arraste
+  let initialScroll = 0;    // scrollLeft do trilho no início do arraste
 
-  gallery.addEventListener('pointerdown', (event) => {
+  track.addEventListener('pointerdown', (event) => {
     dragActive = true;
     dragStart = event.clientX;
-    initialScroll = gallery.scrollLeft;
+    initialScroll = track.scrollLeft;
 
     // setPointerCapture garante que os eventos de movimento continuem
     // sendo recebidos por este elemento mesmo se o ponteiro sair dele.
-    gallery.setPointerCapture(event.pointerId);
-    gallery.classList.add('is-dragging'); // classe usada em CSS para trocar o cursor, por exemplo
+    track.setPointerCapture(event.pointerId);
+    track.classList.add('is-dragging'); // troca o cursor para "grabbing" via CSS
   });
 
-  gallery.addEventListener('pointermove', (event) => {
+  track.addEventListener('pointermove', (event) => {
     if (!dragActive) return;
-    // Move a galeria na direção oposta ao deslocamento do ponteiro,
+    // Move o trilho na direção oposta ao deslocamento do ponteiro,
     // simulando o efeito de "arrastar o conteúdo".
-    gallery.scrollLeft = initialScroll - (event.clientX - dragStart);
+    track.scrollLeft = initialScroll - (event.clientX - dragStart);
   });
 
   // Qualquer um destes eventos encerra o arraste (soltar o botão,
   // cancelamento do ponteiro, ou o ponteiro saindo da área).
   ['pointerup', 'pointercancel', 'pointerleave'].forEach((type) => {
-    gallery.addEventListener(type, () => {
+    track.addEventListener(type, () => {
       dragActive = false;
-      gallery.classList.remove('is-dragging');
+      track.classList.remove('is-dragging');
     });
   });
-}
+});
 
 /* ===== 6. ANIMAÇÕES DE ENTRADA (SCROLL REVEAL) ===== */
 
@@ -142,12 +145,16 @@ const observer = new IntersectionObserver(
   { threshold: 0.1 } // considera "visível" quando 10% do elemento aparece na tela
 );
 
-// Se o usuário preferir movimento reduzido, os elementos já aparecem
-// visíveis de imediato, sem a animação de entrada.
+/* Se o usuário preferir movimento reduzido, os elementos já aparecem
+   visíveis de imediato, sem a animação de entrada.
+   Selecionamos ".reveal" (títulos, textos) e ".card-reveal" (cards de
+   projetos/avaliações, que têm sua própria transformação — ver
+   style.css) juntos, pois usam exatamente o mesmo mecanismo de
+   observação e a mesma classe de disparo (.is-visible). */
 if (!reduceMotion) {
-  document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+  document.querySelectorAll('.reveal, .card-reveal').forEach((element) => observer.observe(element));
 } else {
-  document.querySelectorAll('.reveal').forEach((element) => element.classList.add('is-visible'));
+  document.querySelectorAll('.reveal, .card-reveal').forEach((element) => element.classList.add('is-visible'));
 }
 
 /* ===== 7. BARRA DE PROGRESSO DE ROLAGEM (ROLO DE TINTA) ===== */

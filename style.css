@@ -271,6 +271,14 @@ body:has(.mobile-nav.open) .site-header {
 .section-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px 40px; align-items: end; margin-bottom: 40px; }
 .section-heading > p { flex: 0 1 280px; max-width: 280px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
 
+/* Classe reutilizável para qualquer trilho arrastável horizontalmente
+   (galeria de projetos e carrossel de avaliações). O comportamento de
+   arraste em si é aplicado via JS a todo elemento com esta classe
+   (ver script.js, seção 5), então basta adicioná-la a um novo trilho
+   para ele ficar arrastável automaticamente. */
+.drag-scroll { cursor: grab; }
+.drag-scroll.is-dragging { cursor: grabbing; }
+
 /* Trilho horizontal com scroll-snap: os cartões "encaixam" durante a rolagem.
    O arraste com o mouse é implementado em script.js (eventos pointerdown/move/up). */
 .project-track {
@@ -282,17 +290,28 @@ body:has(.mobile-nav.open) .site-header {
   scroll-snap-type: x mandatory;
   scrollbar-width: thin;
   scrollbar-color: var(--gold) transparent;
-  cursor: grab;
 }
 .project-card {
   position: relative;
   flex: 0 0 min(300px, 80vw); /* não cresce nem encolhe; largura fixa limitada pela viewport */
   height: 420px;
   border-radius: 8px;
-  overflow: hidden;
+  overflow: hidden; /* recorta a imagem interna nos cantos arredondados */
   background: var(--surface-2);
   scroll-snap-align: start;
+
+  /* Moldura dourada brilhante e pulsante: usamos box-shadow (não border)
+     porque ele é desenhado por fora da caixa do elemento e, diferente de
+     um filho posicionado, NÃO é cortado pelo "overflow: hidden" acima —
+     por isso o brilho aparece por fora do card normalmente. */
+  animation: brilho-dourado 3s ease-in-out infinite;
 }
+/* Pequeno atraso entre os cards para o brilho não pulsar todo ao mesmo
+   tempo — cria uma sensação de "onda" de luz percorrendo a galeria. */
+.project-card:nth-child(2) { animation-delay: 0.4s; }
+.project-card:nth-child(3) { animation-delay: 0.8s; }
+.project-card:nth-child(4) { animation-delay: 1.2s; }
+
 .featured-card { flex-basis: min(450px, 85vw); } /* primeiro card é destacado com mais largura */
 .project-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .project-card:hover img { transform: scale(1.05); } /* leve zoom ao passar o mouse */
@@ -301,6 +320,17 @@ body:has(.mobile-nav.open) .site-header {
 .project-card span { color: #f7bc50; font: 11px "DM Mono", monospace; letter-spacing: 0.1em; }
 .project-card h3 { margin: 6px 0 0; font-size: 20px; }
 
+/* Ciclo do brilho: alterna entre um contorno fino e discreto e um halo
+   mais largo e intenso, sempre na cor dourada da marca (--gold-rgb). */
+@keyframes brilho-dourado {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(var(--gold-rgb), 0.35), 0 0 16px rgba(var(--gold-rgb), 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 1.5px rgba(var(--gold-rgb), 0.7), 0 0 32px 4px rgba(var(--gold-rgb), 0.5);
+  }
+}
+
 /* --- Seção "Serviços" --- */
 .services { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 60px; background: var(--surface); }
 .service-list { border-top: 1px solid var(--line); }
@@ -308,6 +338,67 @@ body:has(.mobile-nav.open) .site-header {
 .service-list span { color: var(--gold); font: 12px "DM Mono", monospace; font-weight: bold; }
 .service-list h3 { margin: 0 0 6px; font-size: 20px; }
 .service-list p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+/* --- Seção "Avaliações do Google" --- */
+.reviews { overflow: hidden; background: var(--surface-2); }
+
+/* Mesmo padrão do .project-track (trilho com scroll-snap), reaproveitando
+   a classe .drag-scroll para o arraste com o mouse/touch. */
+.reviews-track {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  padding-bottom: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+
+.review-card {
+  flex: 0 0 min(340px, 85vw); /* largura fixa limitada pela viewport, igual aos cards de projeto */
+  scroll-snap-align: start;
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.review-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.review-avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #fff;
+  font-weight: 800;
+}
+.review-head strong { display: block; font-size: 14px; }
+.review-date { color: var(--muted); font-size: 12px; }
+.google-icon { width: 18px; height: 18px; margin-left: auto; flex-shrink: 0; } /* selo do Google alinhado à direita do card */
+
+.review-stars { margin-bottom: 12px; color: #f5b400; letter-spacing: 2px; font-size: 14px; }
+.review-card p { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.6; }
+
+/* Chamada abaixo do carrossel, levando ao perfil real da empresa no Google Maps */
+.reviews-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.reviews-cta:hover { color: var(--gold-hover); }
+.reviews-cta span { font-size: 16px; }
 
 /* --- Seção de citação/destaque com imagem de fundo --- */
 .quote-section { position: relative; display: grid; min-height: 400px; place-items: center; overflow: hidden; background: #121416; color: #fff; }
@@ -389,6 +480,17 @@ body:has(.mobile-nav.open) .site-header {
 }
 .back-to-top:hover { opacity: 0.8; }
 
+/* Crédito de desenvolvimento ("Desenvolvido por..."): mesmo peso visual
+   do link "voltar ao topo", só o nome do desenvolvedor é clicável. */
+.site-credit { margin: 0; }
+.site-credit a {
+  color: var(--gold);
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.site-credit a:hover { opacity: 0.8; }
+
 /* --- Botões flutuantes fixos (WhatsApp / Instagram) --- */
 .floating-actions { position: fixed; z-index: 80; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
 
@@ -438,6 +540,10 @@ body:has(.mobile-nav.open) .site-header {
   .floating-actions a {
     animation: none;
   }
+  .project-card {
+    animation: none;
+    box-shadow: 0 0 0 1px rgba(var(--gold-rgb), 0.35), 0 0 16px rgba(var(--gold-rgb), 0.25);
+  }
 }
 
 /* Tela de carregamento inicial (logo + barrinha), escondida após o
@@ -464,4 +570,32 @@ body.is-loaded .page-loader { visibility: hidden; opacity: 0; }
   .section { padding: 70px 6vw; }
   .section-heading { align-items: start; }
   .section-heading > p { flex-basis: 100%; max-width: 100%; } /* descrição ocupa a linha toda, evitando texto espremido */
+
+  /* ----- Efeito "vindo de trás" nos cards (só no celular) -----
+     No desktop os cards aparecem normalmente (o usuário já interage
+     arrastando a galeria com o mouse). No celular, cada card de
+     projeto/avaliação nasce menor, borrado e recuado — como se
+     estivesse atrás da tela — e "avança" até o tamanho normal tanto
+     ao rolar a página quanto ao arrastar o carrossel para o lado
+     (o IntersectionObserver dispara a cada card que entra na área
+     visível, então o efeito também acontece card a card durante o
+     swipe horizontal, não só na primeira rolagem até a seção). */
+  .card-reveal {
+    opacity: 0;
+    transform: scale(0.8) translateY(30px);
+    filter: blur(4px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
+  }
+  .card-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  /* Pequeno atraso crescente entre os primeiros cards de cada trilho
+     para reforçar a sensação de profundidade surgindo em sequência
+     (efeito mais perceptível na primeira rolagem até a seção). */
+  .project-card:nth-child(2), .review-card:nth-child(2) { transition-delay: 0.1s; }
+  .project-card:nth-child(3), .review-card:nth-child(3) { transition-delay: 0.2s; }
+  .project-card:nth-child(4), .review-card:nth-child(4) { transition-delay: 0.3s; }
 }
