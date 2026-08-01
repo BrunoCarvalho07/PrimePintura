@@ -11,6 +11,7 @@
   <meta name="description" content="Pintura residencial e comercial em São Paulo - SP. Atendimento na Vila Esperança e região, fachadas, texturas e acabamentos premium. Solicite seu orçamento pelo WhatsApp.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="author" content="Prime Serviços de Pintura">
+  <meta name="google-site-verification" content="tJIjqDXTeRrg3bSHVxPwQx5E5cTf56rTbxZmu0aZrb0" />
   <!-- URL canônica: evita conteúdo duplicado aos olhos dos buscadores.
        Domínio oficial: pinturaprime.com.br -->
   <link rel="canonical" href="https://www.primepintura.com.br/">
@@ -46,6 +47,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+
+  <!-- ============================================================
+       GOOGLE ANALYTICS (GA4)
+       Mede visitas, origem do tráfego e comportamento dos usuários
+       no site. Carregado de forma assíncrona para não travar a
+       renderização da página.
+       ============================================================ -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQV42GDEM2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CQV42GDEM2');
+  </script>
 
   <!-- ============================================================
        DADOS ESTRUTURADOS (Schema.org / JSON-LD)
@@ -191,7 +206,7 @@
       <p class="eyebrow reveal">01 — SOBRE A PRIME</p>
       <div class="intro-grid">
         <h2 class="reveal" id="sobre-titulo">Seu ambiente merece<br>mais do que cor.<br><em>Merece presença.</em></h2>
-        <p class="reveal">Transformamos superfícies em espaços acolhedores, marcantes e preparados para durar. Da seleção da cor à última demão, cada fase é conduzida com responsabilidade.</p>
+        <p class="reveal">Cada superfície tem potencial para se tornar um espaço acolhedor e duradouro. Da escolha da cor ao acabamento final, cuidamos de cada etapa com técnica e responsabilidade.</p>
       </div>
     </section>
 
@@ -212,23 +227,38 @@
            melhorando a performance inicial da página. -->
       <div class="project-track drag-scroll" aria-label="Galeria de trabalhos da Prime Serviços de Pintura">
         <article class="project-card featured-card card-reveal">
-          <img src="assets/foto2.jpeg" alt="Sala elegante com painel marmorizado" loading="lazy">
+          <img src="assets/foto2.jpeg" alt="Sala elegante com painel marmorizado" loading="lazy" class="zoomable-photo" tabindex="0" role="button" aria-label="Ampliar foto: Elegância em cada detalhe">
           <div><span>INTERIORES</span><h3>Elegância em cada detalhe</h3></div>
         </article>
         <article class="project-card card-reveal">
-          <img src="assets/foto1.jpeg" alt="Quarto com pintura em tom cinza" loading="lazy">
+          <img src="assets/foto1.jpeg" alt="Quarto com pintura em tom cinza" loading="lazy" class="zoomable-photo" tabindex="0" role="button" aria-label="Ampliar foto: Leveza e precisão">
           <div><span>RESIDENCIAL</span><h3>Leveza e precisão</h3></div>
         </article>
         <article class="project-card card-reveal">
-          <img src="assets/foto5.jpeg" alt="Cozinha com gesso iluminado" loading="lazy">
+          <img src="assets/foto5.jpeg" alt="Cozinha com gesso iluminado" loading="lazy" class="zoomable-photo" tabindex="0" role="button" aria-label="Ampliar foto: Luz, textura e harmonia">
           <div><span>ACABAMENTOS</span><h3>Luz, textura e harmonia</h3></div>
         </article>
         <article class="project-card card-reveal">
-          <img src="assets/foto4.jpeg" alt="Fachada residencial moderna" loading="lazy">
+          <img src="assets/foto4.jpeg" alt="Fachada residencial moderna" loading="lazy" class="zoomable-photo" tabindex="0" role="button" aria-label="Ampliar foto: Impacto desde a chegada">
           <div><span>FACHADAS</span><h3>Impacto desde a chegada</h3></div>
         </article>
       </div>
     </section>
+
+    <!-- ============================================================
+         LIGHTBOX (visor de foto ampliada)
+         Fica oculto por padrão (classe "open" controla a exibição via
+         CSS/JS — ver script.js). Ao clicar em qualquer foto da galeria
+         de projetos, a imagem é inserida aqui e exibida em tamanho grande.
+         ============================================================ -->
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+      <div class="lightbox-card">
+        <button class="lightbox-close" type="button" aria-label="Fechar foto ampliada">&times;</button>
+        <button class="lightbox-nav lightbox-prev" type="button" aria-label="Foto anterior">&#10094;</button>
+        <img class="lightbox-image" src="" alt="">
+        <button class="lightbox-nav lightbox-next" type="button" aria-label="Próxima foto">&#10095;</button>
+      </div>
+    </div>
 
     <!-- ============================================================
          SEÇÃO "SERVIÇOS" (03)
@@ -350,7 +380,7 @@
          SEÇÃO DE CITAÇÃO / DESTAQUE
          ============================================================ -->
     <section class="quote-section">
-      <img src="assets/foto1.jpeg" alt="Ambiente em processo de pintura" loading="lazy">
+      <img src="assets/foto1.jpeg" alt="Ambiente em processo de pintura" loading="lazy" class="zoomable-photo" tabindex="0" role="button" aria-label="Ampliar foto">
       <div class="reveal"><p>Mais do que uma nova pintura, entregamos a sensação de <em>estar em casa.</em></p></div>
     </section>
 
@@ -406,7 +436,7 @@
     <div class="footer-bottom">
       <p>© 2026 PRIME SERVIÇOS DE PINTURA • TODOS OS DIREITOS RESERVADOS</p>
       <!-- TODO: troque o href abaixo pelo link real do seu perfil do LinkedIn -->
-      <p class="site-credit">Desenvolvido por <a href="https://www.linkedin.com/in/bruno-carvalho-silvaa" target="_blank" rel="noopener">Bruno Carvalho</a></p>
+      <p class="site-credit"> Desenvolvido por  <a href="https://www.linkedin.com/in/bruno-carvalho-silvaa" target="_blank" rel="noopener"> Bruno Carvalho</a></p>
       <a href="#inicio" class="back-to-top">Voltar ao topo ↑</a>
     </div>
   </footer>

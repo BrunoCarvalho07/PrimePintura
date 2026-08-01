@@ -91,13 +91,24 @@ h1 em, h2 em, .quote-section em { font-family: "Playfair Display", serif; font-w
 .button-gold {
   background: var(--gold);
   color: #fff;
-  /* Efeito de "piscar"/pulsar: cria um halo que se expande e
-     desaparece continuamente, chamando atenção para o botão.
-     A cor do halo usa --gold-rgb para acompanhar o tema claro/escuro. */
-  --pulse-color: rgba(var(--gold-rgb), 0.55);
-  animation: pulsar-botao 2s infinite ease-in-out;
+  /* Efeito de brilho: um halo dourado que pulsa ao redor do botão,
+     chamando atenção para a chamada para ação. Nome de animação
+     próprio (diferente de "pulsar-botao") para não afetar os botões
+     flutuantes de WhatsApp/Instagram, que usam esse outro nome. */
+  animation: brilho-botao-dourado 2s infinite ease-in-out;
 }
 .button-gold:hover { background: var(--gold-hover); }
+
+/* Ciclo do brilho: alterna entre um contorno fino e discreto e um
+   halo mais largo e intenso ao redor do botão, na cor dourada da marca. */
+@keyframes brilho-botao-dourado {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(var(--gold-rgb), 0.35), 0 0 10px rgba(var(--gold-rgb), 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 1.5px rgba(var(--gold-rgb), 0.7), 0 0 22px 4px rgba(var(--gold-rgb), 0.55);
+  }
+}
 
 /* ===== 2. BARRA DE PROGRESSO DE ROLAGEM (ROLINHO DE TINTA) ===== */
 
@@ -258,7 +269,18 @@ body:has(.mobile-nav.open) .site-header {
 
 /* --- Seção "Sobre" --- */
 .intro { background: var(--surface); }
-.intro-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px; align-items: end; }
+.intro-grid {
+  display: grid;
+  /* segunda coluna com largura limitada (min 280px, max 420px) para o
+     parágrafo não "esticar" e ficar longe do título em monitores
+     bem largos — o ajuste vale só para o modo computador; no celular
+     a media query mais abaixo (max-width: 850px) continua
+     sobrescrevendo para uma única coluna, sem nenhuma mudança. */
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 420px);
+  gap: 40px 60px;
+  align-items: start;
+  max-width: 1200px;
+}
 .intro h2 em, .services h2 em { color: var(--gold); }
 .intro-grid > p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
 
@@ -313,10 +335,101 @@ body:has(.mobile-nav.open) .site-header {
 .project-card:nth-child(4) { animation-delay: 1.2s; }
 
 .featured-card { flex-basis: min(450px, 85vw); } /* primeiro card é destacado com mais largura */
-.project-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.project-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; cursor: zoom-in; }
 .project-card:hover img { transform: scale(1.05); } /* leve zoom ao passar o mouse */
-.project-card:after { position: absolute; inset: 30% 0 0; content: ""; background: linear-gradient(transparent, rgba(0,0,0,0.8)); } /* gradiente para legibilidade do texto sobre a foto */
-.project-card div { position: absolute; z-index: 1; right: 20px; bottom: 20px; left: 20px; color: #fff; }
+
+/* ============================================================
+   VISOR DE FOTO (preview rápido ao clicar)
+   Diferente de um lightbox tradicional em tela cheia: aqui a foto
+   aparece em um cartão menor, centralizado, com o restante do site
+   ainda visível e escurecido ao fundo — reforça a sensação de
+   "espiada rápida" na foto, sem dar a impressão de ter saído da
+   página. Controlado via classe ".open" (ver script.js).
+   ============================================================ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(10, 9, 7, 0.55);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.lightbox.open { opacity: 1; visibility: visible; }
+.lightbox-card { position: relative; }
+.lightbox-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(420px, 80vw);
+  max-height: 55vh;
+  border-radius: 10px;
+  /* mesmo brilho dourado suave dos cards da galeria, para manter a
+     identidade visual também na foto ampliada */
+  box-shadow: 0 0 0 1px rgba(var(--gold-rgb), 0.4), 0 8px 40px 6px rgba(0, 0, 0, 0.45);
+
+  /* pequena entrada em "zoom" da própria foto, sem afetar o card original */
+  transform: scale(0.92);
+  transition: transform 0.25s ease;
+}
+.lightbox.open .lightbox-image { transform: scale(1); }
+.lightbox-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #1a1a1a;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s;
+}
+.lightbox-close:hover { transform: scale(1.1); }
+
+/* Setas de navegação (foto anterior / próxima), uma de cada lado
+   da foto, verticalmente centralizadas. */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.lightbox-nav:hover { background: rgba(255, 255, 255, 0.25); }
+.lightbox-prev { left: -20px; transform: translate(-100%, -50%); }
+.lightbox-next { right: -20px; transform: translate(100%, -50%); }
+.lightbox-prev:hover { transform: translate(-100%, -50%) scale(1.1); }
+.lightbox-next:hover { transform: translate(100%, -50%) scale(1.1); }
+
+/* Em telas estreitas não há espaço nas laterais da foto: as setas
+   passam a ficar por cima da própria imagem, com um fundo mais
+   opaco para continuarem legíveis sobre qualquer foto. */
+@media (max-width: 560px) {
+  .lightbox-prev { left: 8px; transform: translateY(-50%); background: rgba(0, 0, 0, 0.45); }
+  .lightbox-next { right: 8px; transform: translateY(-50%); background: rgba(0, 0, 0, 0.45); }
+  .lightbox-prev:hover { transform: translateY(-50%) scale(1.1); }
+  .lightbox-next:hover { transform: translateY(-50%) scale(1.1); }
+}
+.project-card:after { position: absolute; inset: 30% 0 0; content: ""; background: linear-gradient(transparent, rgba(0,0,0,0.8)); pointer-events: none; } /* gradiente para legibilidade do texto sobre a foto; pointer-events: none para não bloquear o clique na foto abaixo */
+.project-card div { position: absolute; z-index: 1; right: 20px; bottom: 20px; left: 20px; color: #fff; pointer-events: none; } /* mesmo motivo: o título fica sobre a foto mas não deve capturar o clique */
 .project-card span { color: #f7bc50; font: 11px "DM Mono", monospace; letter-spacing: 0.1em; }
 .project-card h3 { margin: 6px 0 0; font-size: 20px; }
 
@@ -590,6 +703,20 @@ body.is-loaded .page-loader { visibility: hidden; opacity: 0; }
     opacity: 1;
     transform: none;
     filter: none;
+  }
+
+  /* Os cards de FOTOS da galeria de projetos não usam mais o efeito de
+     "vindo de trás" (scale + blur) — ficou parecendo uma animação de
+     abertura da foto, o que não era o efeito desejado. Mantemos apenas
+     um fade simples com leve deslocamento vertical; o brilho dourado
+     ao redor da foto (.project-card, ver @keyframes brilho-dourado)
+     continua normalmente, sem nenhuma alteração. */
+  .project-card.card-reveal {
+    transform: translateY(16px);
+    filter: none;
+  }
+  .project-card.card-reveal.is-visible {
+    transform: none;
   }
 
   /* Pequeno atraso crescente entre os primeiros cards de cada trilho

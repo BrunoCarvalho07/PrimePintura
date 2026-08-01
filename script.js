@@ -100,9 +100,11 @@ document.querySelectorAll('.drag-scroll').forEach((track) => {
   let dragActive = false;   // indica se o usuário está arrastando este trilho no momento
   let dragStart = 0;        // posição X do ponteiro no início do arraste
   let initialScroll = 0;    // scrollLeft do trilho no início do arraste
+  let dragMoved = false;    // indica se houve deslocamento real (para não confundir com um clique)
 
   track.addEventListener('pointerdown', (event) => {
     dragActive = true;
+    dragMoved = false;
     dragStart = event.clientX;
     initialScroll = track.scrollLeft;
 
@@ -114,10 +116,26 @@ document.querySelectorAll('.drag-scroll').forEach((track) => {
 
   track.addEventListener('pointermove', (event) => {
     if (!dragActive) return;
+    const delta = event.clientX - dragStart;
+    // Só considera "arraste" de fato após um pequeno deslocamento,
+    // evitando que um clique simples nas fotos (ver lightbox) seja
+    // interpretado como o início de um arraste.
+    if (Math.abs(delta) > 5) dragMoved = true;
     // Move o trilho na direção oposta ao deslocamento do ponteiro,
     // simulando o efeito de "arrastar o conteúdo".
-    track.scrollLeft = initialScroll - (event.clientX - dragStart);
+    track.scrollLeft = initialScroll - delta;
   });
+
+  // Enquanto o arraste estiver em andamento, impede que o clique nas
+  // fotos abra o lightbox — captura o evento antes que ele chegue à
+  // <img> (fase de "capture") e o cancela apenas quando houve
+  // deslocamento real do ponteiro.
+  track.addEventListener('click', (event) => {
+    if (dragMoved) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
 
   // Qualquer um destes eventos encerra o arraste (soltar o botão,
   // cancelamento do ponteiro, ou o ponteiro saindo da área).
@@ -157,7 +175,81 @@ if (!reduceMotion) {
   document.querySelectorAll('.reveal, .card-reveal').forEach((element) => element.classList.add('is-visible'));
 }
 
-/* ===== 7. BARRA DE PROGRESSO DE ROLAGEM (ROLO DE TINTA) ===== */
+/* ===== 7. LIGHTBOX (FOTO AMPLIADA AO CLICAR) ===== */
+
+// Ao clicar em qualquer foto da galeria de projetos, ela é exibida
+// ampliada no lightbox (evita repetir esta lógica card a card).
+const lightbox = document.querySelector('#lightbox');
+const lightboxImage = lightbox ? lightbox.querySelector('.lightbox-image') : null;
+const lightboxClose = lightbox ? lightbox.querySelector('.lightbox-close') : null;
+const lightboxPrev = lightbox ? lightbox.querySelector('.lightbox-prev') : null;
+const lightboxNext = lightbox ? lightbox.querySelector('.lightbox-next') : null;
+
+// Lista de todas as fotos clicáveis do site, na ordem em que aparecem
+// na página — usada para saber qual é a "próxima"/"anterior" foto a
+// mostrar sem precisar fechar e reabrir o visor.
+const zoomablePhotos = Array.from(document.querySelectorAll('.zoomable-photo'));
+let currentPhotoIndex = -1;
+
+function showPhotoAt(index) {
+  if (!lightboxImage || zoomablePhotos.length === 0) return;
+  // % garante que o índice sempre "dá a volta" (da última foto pula
+  // para a primeira, e vice-versa).
+  currentPhotoIndex = (index + zoomablePhotos.length) % zoomablePhotos.length;
+  const photo = zoomablePhotos[currentPhotoIndex];
+  lightboxImage.src = photo.src;
+  lightboxImage.alt = photo.alt;
+}
+
+function openLightbox(photo) {
+  if (!lightbox || !lightboxImage) return;
+  showPhotoAt(zoomablePhotos.indexOf(photo));
+  lightbox.classList.add('open');
+  lightbox.setAttribute('aria-hidden', 'false');
+  body.style.overflow = 'hidden'; // trava o scroll de fundo com o lightbox aberto
+}
+
+function closeLightbox() {
+  if (!lightbox) return;
+  lightbox.classList.remove('open');
+  lightbox.setAttribute('aria-hidden', 'true');
+  body.style.overflow = '';
+}
+
+zoomablePhotos.forEach((photo) => {
+  photo.addEventListener('click', () => openLightbox(photo));
+
+  // permite abrir a foto também pelo teclado (Enter / Espaço),
+  // já que a imagem recebe foco via tabindex="0" no HTML.
+  photo.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openLightbox(photo);
+    }
+  });
+});
+
+if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+if (lightboxPrev) lightboxPrev.addEventListener('click', () => showPhotoAt(currentPhotoIndex - 1));
+if (lightboxNext) lightboxNext.addEventListener('click', () => showPhotoAt(currentPhotoIndex + 1));
+
+// Fecha ao clicar no fundo escurecido (fora da própria foto).
+if (lightbox) {
+  lightbox.addEventListener('click', (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+}
+
+// Com o visor aberto: Esc fecha, e as setas do teclado trocam de foto
+// — sem precisar fechar e reabrir.
+document.addEventListener('keydown', (event) => {
+  if (!lightbox || !lightbox.classList.contains('open')) return;
+  if (event.key === 'Escape') closeLightbox();
+  if (event.key === 'ArrowLeft') showPhotoAt(currentPhotoIndex - 1);
+  if (event.key === 'ArrowRight') showPhotoAt(currentPhotoIndex + 1);
+});
+
+/* ===== 8. BARRA DE PROGRESSO DE ROLAGEM (ROLO DE TINTA) ===== */
 
 /**
  * Calcula a porcentagem já rolada da página e atualiza a variável
